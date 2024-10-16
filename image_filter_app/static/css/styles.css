@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #e0d4d4;
+    color: #493737;
+}
+
+.container {
+    text-align: center;
+}
+
+.image-container {
+    margin-bottom: 20px;
+}
+
+.image-container img {
+    width: 300px;
+    height: auto;
+    transition: filter 0.3s ease;
+}
+
+/* Filters */
+.none img {
+    filter: none;
+}
+
+.blur img {
+    filter: blur(5px);
+}
+
+.grayscale img {
+    filter: grayscale(100%);
+}
+
+.brightness img {
+    filter: brightness(150%);
+}
+
+.contrast img {
+    filter: contrast(200%);
+}
+
+.saturate img {
+    filter: saturate(200%);
+}
+
+.opacity img {
+    filter: opacity(50%);
+}
+
+.hue-rotate img {
+    filter: hue-rotate(90deg);
+}
+
+.drop-shadow img {
+    filter: drop-shadow(8px 8px 10px gray);
+}
+
+.invert img {
+    filter: invert(100%);
+}
+
+form button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #dddada;
+}
+
+/* Active state for buttons */
+form button:active {
+    background-color: #007bff; /* Change to blue */
+}

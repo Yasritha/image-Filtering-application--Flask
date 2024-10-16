@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Filter App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .hidden {
+            display: none;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .image-container {
+            margin-top: 20px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: nowrap;
+            margin-top: 20px;
+        }
+        .filter-button {
+            padding: 10px 10px;
+            font-size: 15px;
+            background-color: #65809c; /* Blue color */
+            color: rgb(255, 255, 255);
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .filter-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+        #saveButton {
+            background-color: blue;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .container {
+            color: #65809c;
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            text-decoration: none;
+            color: #65809c;
+        }
+        .back-button:hover {
+            color: #0056b3;
+        }
+        @media screen and (max-width: 800px) {
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('index') }}" class="back-button">&#8592;</a>
+    <div class="container">
+        <h1>SS Image Filters</h1>
+        
+        <div class="image-container">
+            <img id="preview" src="{{ uploaded_image }}" alt="Uploaded Image">
+        </div>
+        
+        <form id="uploadForm" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" id="fileInput">
+            <button type="submit" class="hidden" id="submitButton">Upload</button>
+            
+            <div class="button-container">
+                <button type="submit" name="filter" value="default" class="filter-button">Default</button>
+                <button type="submit" name="filter" value="grayscale" class="filter-button">Grayscale</button>
+                <button type="submit" name="filter" value="brightness" class="filter-button">Brightness</button>
+                <button type="submit" name="filter" value="contrast" class="filter-button">Contrast</button>
+                <button type="submit" name="filter" value="saturate" class="filter-button">Saturation</button>
+                <button type="submit" name="filter" value="hue-rotate" class="filter-button">Hue-Rotate</button>
+                <button type="submit" name="filter" value="invert" class="filter-button">Invert</button>
+            </div>
+            
+            <button type="submit" name="action" value="save" id="saveButton">Save Image</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                    document.getElementById('submitButton').click();
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

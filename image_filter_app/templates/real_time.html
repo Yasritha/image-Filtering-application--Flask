@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Image Capture with Filters</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .video-container {
+            position: relative;
+            display: inline-block;
+        }
+        .video-container video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px; /* Rounded corners for video */
+            filter: none; /* Default: no filter */
+        }
+        .capture-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            z-index: 1; /* Ensure it's above the video */
+        }
+        .capture-button-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 123, 255, 0.7); /* Semi-transparent blue */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .capture-button-circle:hover {
+            background-color: rgba(0, 123, 255, 1); /* Solid blue on hover */
+        }
+        .inner-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .inner-circle {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 50%;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .filter-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #5e656c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .filter-button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        .captured-image-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        .captured-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .overlay-buttons {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        .overlay-buttons button {
+            background-color: rgba(157, 141, 204, 0.953);
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            z-index: 1; /* Ensure it's above the captured image */
+        }
+        .overlay-buttons button:hover {
+            background-color: rgba(149, 138, 212, 0.915);
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            text-decoration: none;
+            color: #65809c;
+        }
+        .back-button:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('index') }}" class="back-button">&#8592;</a>
+    <div class="container">
+        <h1>Real-Time Image Capture with Filters</h1>
+        <div class="video-container">
+            <video id="video" autoplay></video>
+            <canvas id="canvas" class="hidden"></canvas>
+            <button class="capture-button" onclick="capturePhoto()">
+                <div class="capture-button-circle">
+                    <div class="inner-circle"></div>
+                </div>
+            </button>
+        </div>
+        <div class="button-container">
+            <button class="filter-button" onclick="applyFilter('none')">None</button>
+            <button class="filter-button" onclick="applyFilter('grayscale')">Grayscale</button>
+            <button class="filter-button" onclick="applyFilter('brightness')">Brightness</button>
+            <button class="filter-button" onclick="applyFilter('contrast')">Contrast</button>
+            <button class="filter-button" onclick="applyFilter('saturate')">Saturation</button>
+            <button class="filter-button" onclick="applyFilter('invert')">Invert</button>
+            <button class="filter-button" onclick="applyFilter('sepia')">Sepia</button>
+            <button class="filter-button" onclick="applyFilter('blur')">Blur</button>
+        </div>
+        <div id="capturedImageContainer" class="hidden">
+            <h2>Captured Image</h2>
+            <div class="captured-image-container">
+                <img id="capturedImage" class="captured-image" src="" alt="Captured Photo">
+                <div class="overlay-buttons">
+                    <button class="close-button" onclick="closeImage()">✕</button>
+                    <a id="downloadLink" class="hidden" download="captured-image.png">
+                        <button class="filter-button">Save Image</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+
+        // Access the webcam
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function (error) {
+                    console.error('Error accessing the webcam:', error);
+                });
+        }
+
+        function applyFilter(filter) {
+            switch (filter) {
+                case 'grayscale':
+                    video.style.filter = 'grayscale(100%)';
+                    break;
+                case 'brightness':
+                    video.style.filter = 'brightness(150%)';
+                    break;
+                case 'contrast':
+                    video.style.filter = 'contrast(150%)';
+                    break;
+                case 'saturate':
+                    video.style.filter = 'saturate(200%)';
+                    break;
+                case 'hue-rotate':
+                    video.style.filter = 'hue-rotate(90deg)';
+                    break;
+                case 'invert':
+                    video.style.filter = 'invert(100%)';
+                    break;
+                case 'sepia':
+                    video.style.filter = 'sepia(100%)';
+                    break;
+                case 'blur':
+                    video.style.filter = 'blur(5px)';
+                    break;
+                default:
+                    video.style.filter = 'none';
+                    break;
+            }
+        }
+
+        function capturePhoto() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.filter = video.style.filter; // Apply current video filter to canvas context
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob(function(blob) {
+                const capturedImage = document.getElementById('capturedImage');
+                capturedImage.src = URL.createObjectURL(blob);
+                const capturedImageContainer = document.getElementById('capturedImageContainer');
+                const downloadLink = document.getElementById('downloadLink');
+
+                // Set the href attribute for the download link
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.classList.remove('hidden');
+
+                capturedImageContainer.classList.remove('hidden');
+            }, 'image/png');
+        }
+
+        function closeImage() {
+            const capturedImageContainer = document.getElementById('capturedImageContainer');
+            capturedImageContainer.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

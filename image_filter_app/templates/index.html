@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Filter App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .image-button {
+            display: block;
+            max-width: 500px;
+            height: 500px;
+            border: none;
+            color: black;
+            background: none;
+            cursor: pointer;
+        }
+        .image-button img {
+            max-width: 100%;
+            height: 300px;
+        }
+        .button-container h2 {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="button-container">
+            <form action="{{ url_for('real_time') }}" method="get">
+                <button type="submit" class="image-button">
+                    <img src="{{ url_for('static', filename='uploads/real_time.jpg') }}" alt="Real Time"><h3>Real-time filters</h3>
+                </button>
+            </form>
+            <form action="{{ url_for('filters') }}" method="get">
+                <button type="submit" class="image-button">
+                    <img src="{{ url_for('static', filename='uploads/filter.jpg') }}" alt="Image Filters"><h3>Image Filtering</h3>
+                </button>
+            </form>
+        </div>
+        <h2>Explore Real-time and Image Filters</h2>
+    </div>
+</body>
+</html>
