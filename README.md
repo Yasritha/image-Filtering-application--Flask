@@ -41,10 +41,10 @@ Welcome to the **Image Filter Application**! This web-based app allows users to 
 ![Home Page](screenshots/home_page.png)
 
 ### 2. Real-Time Filters
-![Real-Time Filters](screenshots/real_time_filters.png)
+![Real-Time Filters](screenshots/real_time.png)
 
 ### 3. Capture Photo
-![Capture Photo](screenshots/capture_photo.png)
+![Capture Photo](screenshots/apply_filter.png)
 
 ## Future Enhancements
 
