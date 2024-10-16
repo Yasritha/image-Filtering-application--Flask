@@ -38,13 +38,13 @@ Welcome to the **Image Filter Application**! This web-based app allows users to 
 ## Screenshots
 
 ### 1. Home Page
-![Home Page](screenshots/home_page.png)
+![Home Page](image_filter_app/screenshots/home_page.png)
 
 ### 2. Real-Time Filters
-![Real-Time Filters](screenshots/real_time.png)
+![Real-Time Filters](image_filter_app/screenshots/real_time.png)
 
 ### 3. Capture Photo
-![Capture Photo](screenshots/apply_filter.png)
+![Capture Photo](image_filter_app/screenshots/apply_filter.png)
 
 ## Future Enhancements
 
